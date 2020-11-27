@@ -4,7 +4,57 @@ var port = process.env.PORT || 3000,
     html = fs.readFileSync('index.html');
 const express = require('express');
 const app = express();
+const multer = require("multer");
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({limit: '200mb', extended: true}));
+app.use("/images", express.static(path.join("backend/images")));
+
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PATCH, DELETE, OPTIONS"
+  );
+  next();
+});
+
+const MIME_TYPE_MAP = {
+ 	  "application/json" : "json"
+};
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    const isValid = MIME_TYPE_MAP[file.mimetype];
+    let error = new Error("Invalid mime type");
+    if (isValid) {
+      error = null;
+    }
+    cb(error, "backend/images");
+  },
+  filename: (req, file, cb) => {
+    const name = file.originalname
+      .toLowerCase()
+      .split(" ")
+      .join("-");
+    const ext = MIME_TYPE_MAP[file.mimetype];
+    cb(null, name + "-" + Date.now() + "." + ext);
+  }
+});
+
+var upload = multer({ storage : storage});
+app.post("/",upload.single("json"), (req, res, next) => {
+  const post = req.body;
+  console.log(req.file);
+  res.status(201).json({
+file : req.file
+  });
+});
 
 app.get("/", (req, res, next) => {
 	res.send("welcome to express");
