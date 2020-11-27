@@ -6,7 +6,7 @@ const express = require('express');
 const app = express();
 
 
-router.get("/", (req, res, next) => {
+app.get("/", (req, res, next) => {
 	res.send("welcome to express");
 	  });
 
