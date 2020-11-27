@@ -5,6 +5,8 @@ var port = process.env.PORT || 3000,
 const express = require('express');
 const app = express();
 const multer = require("multer");
+const bodyParser = require("body-parser");
+const path = require("path");
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
