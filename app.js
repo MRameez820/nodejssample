@@ -53,7 +53,8 @@ var upload = multer({ storage : storage});
 app.post("/",upload.single("json"), (req, res, next) => {
   const post = req.body;
      const url = req.protocol + "://" + req.get("host");
-	var imagepath = (url + "/images/" + req.files[0].filename);
+	 console.log(url);
+	var imagepath = (url + "/images/" + req.file.filename);
   console.log(req.file);
   res.status(201).json({
 path :  imagepath
