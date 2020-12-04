@@ -1,0 +1,4 @@
+node_modules/
+nodekey.pem
+nodejs.zip
+*.zip

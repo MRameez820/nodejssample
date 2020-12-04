@@ -62,7 +62,7 @@ path :  imagepath
 });
 
 app.get("/", (req, res, next) => {
-	res.send("welcome to express");
+	res.send("welcome to express 2+2");
 	  });
 
 // Listen on port 3000, IP defaults to 127.0.0.1
